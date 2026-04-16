@@ -1,0 +1,485 @@
+<!doctype html>
+
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Kamrai POS - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;family=Prompt:wght@300;400;500;600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#d8e3fb",
+              secondary: "#515c70",
+              "surface-variant": "#d9dde0",
+              "primary-container": "#3ae97a",
+              "outline-variant": "#abadaf",
+              "on-background": "#2c2f31",
+              "inverse-surface": "#0b0f10",
+              "on-surface": "#2c2f31",
+              "surface-container-high": "#dfe3e6",
+              "primary-dim": "#005d29",
+              background: "#f5f7f9",
+              "surface-container-low": "#eef1f3",
+              "surface-bright": "#f5f7f9",
+              "on-tertiary-fixed-variant": "#634e00",
+              "on-primary-fixed-variant": "#005928",
+              "surface-container": "#e5e9eb",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#cad5ed",
+              "on-secondary-container": "#475266",
+              "on-tertiary-fixed": "#413200",
+              "on-surface-variant": "#595c5e",
+              "surface-dim": "#d0d5d8",
+              "on-tertiary": "#fff1d5",
+              "inverse-on-surface": "#9a9d9f",
+              "surface-container-highest": "#d9dde0",
+              "tertiary-container": "#fecb00",
+              "on-error": "#ffefec",
+              "tertiary-fixed": "#fecb00",
+              "error-container": "#f95630",
+              primary: "#006a30",
+              "primary-fixed-dim": "#20da6e",
+              "secondary-fixed": "#d8e3fb",
+              outline: "#747779",
+              "on-secondary-fixed": "#354053",
+              "on-secondary": "#eff2ff",
+              "primary-fixed": "#3ae97a",
+              "on-primary-fixed": "#003917",
+              "tertiary-fixed-dim": "#eebe00",
+              "on-primary": "#ceffd2",
+              "on-secondary-fixed-variant": "#515c70",
+              "error-dim": "#b92902",
+              "secondary-dim": "#455064",
+              "on-tertiary-container": "#584500",
+              "surface-tint": "#006a30",
+              surface: "#f5f7f9",
+              "tertiary-dim": "#624d00",
+              tertiary: "#705900",
+              error: "#b02500",
+              "on-error-container": "#520c00",
+              "on-primary-container": "#004f22",
+              "inverse-primary": "#3ae97a",
+            },
+            borderRadius: {
+              DEFAULT: "1rem",
+              lg: "2rem",
+              xl: "3rem",
+              full: "9999px",
+            },
+            fontFamily: {
+              headline: ["Plus Jakarta Sans", "Prompt"],
+              body: ["Inter", "Prompt"],
+              label: ["Inter", "Prompt"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", "Prompt", sans-serif;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+      }
+      .font-headline {
+        font-family: "Plus Jakarta Sans", "Prompt", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    </style>
+  </head>
+  <body class="bg-background text-on-surface flex flex-col">
+    <!-- TopNavBar - Reduced height to 64px (h-16) -->
+    <nav
+      class="flex-none flex justify-between items-center px-8 h-16 bg-[#f5f7f9]/70 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(44,47,49,0.06)] z-50"
+    >
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <div
+          class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#006a30] to-[#3ae97a] flex items-center justify-center shadow-lg shadow-primary/20"
+        >
+          <span
+            class="material-symbols-outlined text-white text-xl"
+            style="font-variation-settings: &quot;FILL&quot; 1"
+            >storefront</span
+          >
+        </div>
+        <span
+          class="text-xl font-bold bg-gradient-to-br from-[#006a30] to-[#3ae97a] bg-clip-text text-transparent font-headline tracking-tight"
+          >Kamrai POS</span
+        >
+      </div>
+      <!-- Hardware Status -->
+      <div
+        class="hidden md:flex items-center gap-4 px-5 py-1.5 rounded-full bg-surface-container-low/50"
+      >
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#00D166] text-[18px]"
+            >print</span
+          >
+          <span
+            class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider"
+            >Printer</span
+          >
+          <div
+            class="w-1.5 h-1.5 rounded-full bg-[#00D166] animate-pulse"
+          ></div>
+        </div>
+        <div class="h-3 w-[1px] bg-outline-variant/30"></div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#00D166] text-[18px]"
+            >account_balance_wallet</span
+          >
+          <span
+            class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider"
+            >Drawer</span
+          >
+          <div
+            class="w-1.5 h-1.5 rounded-full bg-[#00D166] animate-pulse"
+          ></div>
+        </div>
+        <div class="h-3 w-[1px] bg-outline-variant/30"></div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#00D166] text-[18px]"
+            >wifi</span
+          >
+          <span
+            class="text-[10px] font-semibold text-on-surface-variant uppercase tracking-wider"
+            >System Stable</span
+          >
+        </div>
+      </div>
+      <!-- User Profile & Actions -->
+      <div class="flex items-center gap-4">
+        <button
+          class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-highest/50 hover:bg-surface-container-highest transition-all duration-300 group"
+        >
+          <span
+            class="material-symbols-outlined text-on-surface-variant text-sm group-hover:rotate-180 transition-transform duration-500"
+            >sync</span
+          >
+          <span class="text-xs font-semibold text-on-surface">Branch A</span>
+        </button>
+        <div
+          class="flex items-center gap-3 pl-4 border-l border-outline-variant/30"
+        >
+          <div class="text-right hidden sm:block">
+            <p class="text-xs font-bold text-on-surface leading-tight">
+              Store Manager
+            </p>
+            <p class="text-[10px] text-on-surface-variant">
+              Kamrai Headquarters
+            </p>
+          </div>
+          <div class="relative">
+            <img
+              alt="User avatar"
+              class="w-8 h-8 rounded-full border-2 border-white shadow-sm object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2kAEiK52quDX0ZRWVn1iUhcC5tkWHjSWPo6QI0dXw6SkTX8xuDNgaSF9Rkel08I4Vv9o4k3N8Tsc5zhgKKPlyYyv2P59UpMll8mhSGQs6EvvFVpxj0ddyOnZ44t4RQsu5eI4o608qpK5d083oZdFHLQqMXsnkvZ4-UXLm1niWKoak3DI9_RCCapQI-2NqJ8GkyDb7DvZVXe1nVqDK6Lxzepb088PtDACqzTu-qibOzA0SHPaABaw9YMOckpYrOGsLjjDbQKdpevRr"
+            />
+            <div
+              class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-[#00D166] border-2 border-white rounded-full"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Main Content - Set to fill remaining height and handle layout without scrolling -->
+    <main
+      class="flex-1 flex flex-col justify-between px-8 py-6 max-w-[1280px] mx-auto w-full"
+    >
+      <header class="mb-4">
+        <h1
+          class="text-3xl font-extrabold font-headline text-on-surface tracking-tight mb-0.5"
+        >
+          ยินดีต้อนรับ, ผู้จัดการ
+        </h1>
+        <p class="text-on-surface-variant text-base">
+          เลือกบริการที่ต้องการจัดการวันนี้
+        </p>
+      </header>
+      <!-- 4-Column Grid - Adjusted padding and card size -->
+      <div class="grid grid-cols-4 gap-5 flex-1 max-h-[480px]">
+        <!-- Card 1: POS Terminal -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-primary text-2xl group-hover:text-white transition-colors duration-300"
+              style="font-variation-settings: &quot;FILL&quot; 1"
+              >point_of_sale</span
+            >
+          </div>
+          <h3
+            class="text-lg font-bold mb-1 font-headline group-hover:text-primary transition-colors"
+          >
+            POS Terminal
+          </h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            เปิดหน้าขายอาหาร, เลือกโต๊ะ และคิดเงิน
+          </p>
+          <div
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error/10 text-error font-bold text-[10px] uppercase tracking-wider"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+            5 UNPAID Bills
+          </div>
+        </button>
+        <!-- Card 2: Table Management -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center group-hover:bg-tertiary transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-tertiary-dim text-2xl group-hover:text-on-tertiary-container transition-colors duration-300"
+              >table_restaurant</span
+            >
+          </div>
+          <h3 class="text-lg font-bold mb-1 font-headline">Table Management</h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            จัดการผังโต๊ะ แยกตามโซน และสถานะโต๊ะ
+          </p>
+          <div
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-bold text-[10px] uppercase tracking-wider"
+          >
+            12/24 Available
+          </div>
+        </button>
+        <!-- Card 3: Menu & Buffet -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-orange-600 text-2xl group-hover:text-white transition-colors duration-300"
+              >restaurant_menu</span
+            >
+          </div>
+          <h3 class="text-lg font-bold mb-1 font-headline">
+            Menu &amp; Buffet
+          </h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            ตั้งค่าเมนู A-La-Carte, เซ็ตอาหาร และแพ็กเกจบุฟเฟต์
+          </p>
+          <div
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-[10px]"
+          >
+            Standard List
+          </div>
+        </button>
+        <!-- Card 4: Inventory & Stock -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-blue-600 text-2xl group-hover:text-white transition-colors duration-300"
+              >inventory_2</span
+            >
+          </div>
+          <h3 class="text-lg font-bold mb-1 font-headline">
+            Inventory &amp; Stock
+          </h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            ตรวจสอบสต็อกวัตถุดิบ, วันหมดอายุ และการรับเข้า
+          </p>
+          <div
+            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/20 text-error-dim font-bold text-[10px] uppercase tracking-wider"
+          >
+            3 Items Low Stock
+          </div>
+        </button>
+        <!-- Card 5: Loyalty & CRM -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center group-hover:bg-purple-500 transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-purple-600 text-2xl group-hover:text-white transition-colors duration-300"
+              >groups</span
+            >
+          </div>
+          <h3 class="text-lg font-bold mb-1 font-headline">
+            Loyalty &amp; CRM
+          </h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            จัดการข้อมูลลูกค้าและประวัติการสะสมแต้มส่วนกลาง
+          </p>
+          <div class="text-[10px] font-semibold text-primary">
+            2,450 Members
+          </div>
+        </button>
+        <!-- Card 6: Enterprise & Branch -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center group-hover:bg-slate-800 transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-slate-600 text-2xl group-hover:text-white transition-colors duration-300"
+              >domain</span
+            >
+          </div>
+          <h3 class="text-lg font-bold mb-1 font-headline">
+            Enterprise &amp; Branch
+          </h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            ตั้งค่าบริษัท, สาขา, ภาษี และสิทธิ์การใช้งาน
+          </p>
+          <div class="text-[10px] font-semibold text-on-surface-variant">
+            Global Settings
+          </div>
+        </button>
+        <!-- Card 7: Hardware Settings -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center group-hover:bg-gray-600 transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-gray-600 text-2xl group-hover:text-white transition-colors duration-300"
+              >settings_remote</span
+            >
+          </div>
+          <h3 class="text-lg font-bold mb-1 font-headline">
+            Hardware Settings
+          </h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            เชื่อมต่อเครื่องพิมพ์ และลิ้นชักเก็บเงิน
+          </p>
+          <div class="flex gap-1">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#00D166]"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-[#00D166]"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-outline-variant"></div>
+          </div>
+        </button>
+        <!-- Card 8: Sales Report -->
+        <button
+          class="glass-card group relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border border-white/40"
+        >
+          <div
+            class="mb-4 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors duration-300"
+          >
+            <span
+              class="material-symbols-outlined text-primary text-2xl group-hover:text-white transition-colors duration-300"
+              >analytics</span
+            >
+          </div>
+          <h3
+            class="text-lg font-bold mb-1 font-headline group-hover:text-primary transition-colors"
+          >
+            Sales Report
+          </h3>
+          <p class="text-on-surface-variant text-xs mb-4 line-clamp-2">
+            ดูยอดขายแยกตามช่องทาง และค่า GP
+          </p>
+          <div
+            class="text-[10px] font-bold text-primary flex items-center gap-1"
+          >
+            <span class="material-symbols-outlined text-sm">trending_up</span>
+            +12.5% Today
+          </div>
+        </button>
+      </div>
+      <!-- Footer Info Section - Reduced height and spacing -->
+      <section class="mt-6 flex gap-6 max-h-[260px]">
+        <div
+          class="flex-1 glass-card rounded-2xl p-6 flex gap-6 items-center border border-white/20"
+        >
+          <div class="w-1/3 h-full">
+            <img
+              alt="Modern POS terminal"
+              class="rounded-xl shadow-md object-cover h-full w-full"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYWz0V9iJyZX2ArWU0Alt5qTsYn_Fud1B85CPwG9eI0cNCt2L00_25Ni1qUiy-SgH8xqKp7-psz7tbnVA0Vi-tv1hyHU63L500Skj85_EPzAFSkH9VjUpn1l-X3PqGBz2M-_1kiSRY5B89u1Jx6hEPZ9XyPPC6rpwdkK9LAgY6JGM1wFGdG0xhM6bAha-16ADdOO_0mK69DwslYzigYccVs9k3wGbSPkZqKfjgwWGIJdVN7WDDnw7aOK2zH1rtMI9Uf1Wha8UnQQA7"
+            />
+          </div>
+          <div class="flex-1">
+            <span
+              class="text-primary font-bold text-[10px] tracking-widest uppercase mb-1 block"
+              >Premium Experience</span
+            >
+            <h2 class="text-2xl font-extrabold font-headline mb-2">
+              The Ethereal Merchant POS
+            </h2>
+            <p class="text-on-surface-variant text-sm leading-snug mb-4">
+              ยกระดับการจัดการร้านค้าด้วยระบบ POS ที่ลื่นไหลและทันสมัยที่สุด
+              ออกแบบมาเพื่อธุรกิจยุคใหม่
+            </p>
+            <button
+              class="bg-gradient-to-br from-[#006a30] to-[#3ae97a] text-white px-6 py-2 rounded-full text-sm font-bold shadow-md shadow-primary/20 hover:scale-105 transition-transform"
+            >
+              เรียนรู้เพิ่มเติม
+            </button>
+          </div>
+        </div>
+        <div
+          class="w-1/3 bg-primary p-6 rounded-2xl text-on-primary flex flex-col justify-between shadow-lg shadow-primary/20"
+        >
+          <div>
+            <h3 class="text-xl font-bold font-headline mb-2">
+              ฝ่ายสนับสนุน 24/7
+            </h3>
+            <p class="text-on-primary/80 text-sm mb-4">
+              มีปัญหาการใช้งาน? ติดต่อทีมผู้เชี่ยวชาญของเราได้ทันที
+            </p>
+          </div>
+          <button
+            class="w-full py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center gap-2 text-sm font-bold transition-all border border-white/20"
+          >
+            <span class="material-symbols-outlined text-lg">headset_mic</span>
+            ติดต่อเจ้าหน้าที่
+          </button>
+        </div>
+      </section>
+    </main>
+    <!-- Decorative Elements -->
+    <div
+      class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-40"
+    >
+      <div
+        class="absolute top-[10%] right-[5%] w-[300px] h-[300px] bg-primary/5 blur-[100px] rounded-full"
+      ></div>
+      <div
+        class="absolute bottom-[10%] left-[5%] w-[400px] h-[400px] bg-tertiary/5 blur-[120px] rounded-full"
+      ></div>
+    </div>
+  </body>
+</html>
