@@ -120,14 +120,23 @@ class DeviceScanner {
           }
         }
       } else if (Platform.isWindows) {
+        // Primary: Windows print spooler — catches any printer installed with a
+        // driver (USB port names are USB001, USB002, …).
+        // Fallback: PnpDevice scan for USBPRINT\* devices whose driver is not
+        // yet installed (shows as raw USB hardware).
+        // runInShell: false — bypass cmd.exe so it does not intercept the
+        // pipe characters inside the PowerShell script.
         final result = await Process.run(
           'powershell',
           [
             '-NoProfile',
             '-Command',
-            r'Get-PnpDevice -Class Printer | Where-Object { $_.InstanceId -like "USB*" } | Select-Object FriendlyName,InstanceId | ConvertTo-Json',
+            r'$a=Get-Printer|Where-Object{$_.PortName -like "USB*"}|Select-Object @{N="FriendlyName";E={$_.Name}},@{N="InstanceId";E={$_.Name}};'
+            r'$x="Mass Storage|Composite|Hub|Unknown|Bluetooth|Wireless|Adapter|Keyboard|Mouse|HID";'
+            r'$b=Get-PnpDevice|Where-Object{$_.InstanceId -like "USBPRINT*" -or ($_.Class -eq "USB" -and $_.InstanceId -like "USB\VID_*" -and $_.FriendlyName -notmatch $x)}|Select-Object FriendlyName,InstanceId;'
+            r'(@($a)+@($b))|ConvertTo-Json',
           ],
-          runInShell: true,
+          runInShell: false,
         );
         if (result.exitCode == 0) {
           _parsePsJson(result.stdout as String, found);
@@ -167,7 +176,7 @@ class DeviceScanner {
             '-Command',
             r'Get-PnpDevice -Class Bluetooth | Select-Object FriendlyName,DeviceID | ConvertTo-Json',
           ],
-          runInShell: true,
+          runInShell: false,
         );
         if (result.exitCode == 0) {
           _parsePsJson(result.stdout as String, found);

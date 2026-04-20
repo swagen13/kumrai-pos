@@ -833,7 +833,7 @@ abstract class AppLocalizations {
   /// No description provided for @hardwareHintUsb.
   ///
   /// In en, this message translates to:
-  /// **'/dev/usb/lp0'**
+  /// **'e.g. USB001'**
   String get hardwareHintUsb;
 
   /// No description provided for @hardwareScanUsb.
@@ -865,6 +865,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Print job sent'**
   String get hardwareTestPrintSuccess;
+
+  /// No description provided for @hardwareTestPrintFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Print failed'**
+  String get hardwareTestPrintFailed;
+
+  /// No description provided for @hardwareTestPrintFailedSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the USB connection and try again.'**
+  String get hardwareTestPrintFailedSub;
 
   /// No description provided for @hardwareTestPrintSending.
   ///

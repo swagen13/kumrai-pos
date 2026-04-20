@@ -392,7 +392,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get hardwareLabelUsbPath => 'USB Device Path';
 
   @override
-  String get hardwareHintUsb => '/dev/usb/lp0';
+  String get hardwareHintUsb => 'เช่น USB001';
 
   @override
   String get hardwareScanUsb => 'สแกน USB';
@@ -408,6 +408,13 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get hardwareTestPrintSuccess => 'ส่งงานพิมพ์สำเร็จ';
+
+  @override
+  String get hardwareTestPrintFailed => 'พิมพ์ไม่สำเร็จ';
+
+  @override
+  String get hardwareTestPrintFailedSub =>
+      'ตรวจสอบการเชื่อมต่อ USB แล้วลองใหม่อีกครั้ง';
 
   @override
   String get hardwareTestPrintSending => 'กำลังส่งงานพิมพ์...';

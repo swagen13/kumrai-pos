@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'device_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/widgets/kamrai_widgets.dart';
 import 'device_l10n.dart';
 import 'models/output_device.dart';
+import 'windows_raw_printer.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HardwareScreen — Master-Detail layout for device configuration
@@ -1109,11 +1111,27 @@ class _TestPrintDialog extends StatefulWidget {
 class _TestPrintDialogState extends State<_TestPrintDialog> {
   bool _printing = false;
   bool _done = false;
+  bool _failed = false;
 
   void _print() async {
-    setState(() => _printing = true);
-    await Future.delayed(const Duration(milliseconds: 1800));
-    if (mounted) setState(() {_printing = false; _done = true;});
+    setState(() { _printing = true; _failed = false; });
+    bool ok = false;
+    try {
+      final device = widget.device;
+      if (Platform.isWindows &&
+          device.connectType == ConnectType.usb &&
+          device.deviceAddress.isNotEmpty) {
+        final bytes = WindowsRawPrinter.testPrintBytes(device.outputName);
+        ok = await Future(() => WindowsRawPrinter.sendRaw(device.deviceAddress, bytes));
+      } else {
+        // Non-USB or non-Windows: simulate for now
+        await Future.delayed(const Duration(milliseconds: 1800));
+        ok = true;
+      }
+    } catch (_) {
+      ok = false;
+    }
+    if (mounted) setState(() { _printing = false; _done = ok; _failed = !ok; });
   }
 
   @override
@@ -1133,7 +1151,9 @@ class _TestPrintDialogState extends State<_TestPrintDialog> {
               decoration: BoxDecoration(
                 color: _done
                     ? const Color(0xFFE8F5EE)
-                    : const Color(0xFFF5F7F9),
+                    : _failed
+                        ? const Color(0xFFFFEBEE)
+                        : const Color(0xFFF5F7F9),
                 shape: BoxShape.circle,
               ),
               child: _printing
@@ -1146,29 +1166,39 @@ class _TestPrintDialogState extends State<_TestPrintDialog> {
                   : Icon(
                       _done
                           ? Icons.check_circle_rounded
-                          : Icons.print_rounded,
+                          : _failed
+                              ? Icons.error_outline_rounded
+                              : Icons.print_rounded,
                       size: 32,
-                      color: _done ? AppColors.primary : AppColors.onSurfaceVariant,
+                      color: _done
+                          ? AppColors.primary
+                          : _failed
+                              ? const Color(0xFFE53935)
+                              : AppColors.onSurfaceVariant,
                     ),
             ),
             const SizedBox(height: 16),
             Text(
               _done
                   ? l10n.hardwareTestPrintSuccess
-                  : _printing
-                      ? l10n.hardwareTestPrintSending
-                      : l10n.hardwareTestPrintDialogTitle,
+                  : _failed
+                      ? l10n.hardwareTestPrintFailed
+                      : _printing
+                          ? l10n.hardwareTestPrintSending
+                          : l10n.hardwareTestPrintDialogTitle,
               style: GoogleFonts.prompt(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: AppColors.onSurface,
+                color: _failed ? const Color(0xFFE53935) : AppColors.onSurface,
               ),
             ),
             const SizedBox(height: 6),
             Text(
               _done
                   ? l10n.hardwareTestPrintCheckPaper(widget.device.outputName)
-                  : l10n.hardwareTestPrintDeviceLine(widget.device.outputName),
+                  : _failed
+                      ? l10n.hardwareTestPrintFailedSub
+                      : l10n.hardwareTestPrintDeviceLine(widget.device.outputName),
               style: GoogleFonts.prompt(
                 fontSize: 13,
                 color: AppColors.onSurfaceVariant,

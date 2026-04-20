@@ -394,7 +394,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hardwareLabelUsbPath => 'USB device path';
 
   @override
-  String get hardwareHintUsb => '/dev/usb/lp0';
+  String get hardwareHintUsb => 'e.g. USB001';
 
   @override
   String get hardwareScanUsb => 'Scan USB';
@@ -410,6 +410,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hardwareTestPrintSuccess => 'Print job sent';
+
+  @override
+  String get hardwareTestPrintFailed => 'Print failed';
+
+  @override
+  String get hardwareTestPrintFailedSub =>
+      'Check the USB connection and try again.';
 
   @override
   String get hardwareTestPrintSending => 'Sending print job…';
